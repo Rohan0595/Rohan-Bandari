@@ -1,0 +1,149 @@
+.projects-tab {
+  background: #0a0a0a;
+  color: white;
+  padding: 3rem 0 6rem;
+  min-height: 80vh;
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.project-card {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  border-color: #444;
+  background: #1f1f1f;
+}
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.project-meta {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.project-category {
+  color: #888;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.project-year {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.project-status {
+  padding: 0.3rem 0.8rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.project-status.live {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+}
+
+.project-status.in-development {
+  background: rgba(251, 191, 36, 0.2);
+  color: #fbbf24;
+}
+
+.project-status.completed {
+  background: rgba(59, 130, 246, 0.2);
+  color: #3b82f6;
+}
+
+.project-title {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.project-description {
+  color: #aaa;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.project-technologies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.tech-tag {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ccc;
+  padding: 0.3rem 0.8rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.project-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.project-btn {
+  padding: 0.8rem 1.5rem;
+  border-radius: 6px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.project-btn.primary {
+  background: white;
+  color: #000;
+}
+
+.project-btn.primary:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px);
+}
+
+.project-btn.secondary {
+  background: transparent;
+  color: #888;
+  border: 1px solid #333;
+}
+
+.project-btn.secondary:hover {
+  color: white;
+  border-color: #555;
+}
+
+@media (max-width: 768px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-actions {
+    flex-direction: column;
+  }
+}

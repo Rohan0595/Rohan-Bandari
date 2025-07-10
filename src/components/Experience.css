@@ -1,0 +1,135 @@
+.experience {
+  background: #0a0a0a;
+  color: white;
+  padding: 3rem 0 6rem;
+  min-height: 80vh;
+}
+
+.section-title {
+  font-family: "Montserrat", sans-serif;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 3rem;
+  color: white;
+}
+
+.timeline {
+  position: relative;
+  max-width: 900px;
+}
+
+.timeline-item {
+  display: flex;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.timeline-marker {
+  position: relative;
+  margin-right: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timeline-dot {
+  width: 12px;
+  height: 12px;
+  background: white;
+  border-radius: 50%;
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+.timeline-line {
+  width: 1px;
+  background: #333;
+  flex: 1;
+  margin-top: 1rem;
+  min-height: 100px;
+}
+
+.timeline-content {
+  flex: 1;
+  padding-bottom: 2rem;
+}
+
+.experience-header {
+  margin-bottom: 1.5rem;
+}
+
+.experience-period {
+  color: #888;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.experience-title {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.experience-company {
+  color: #888;
+  text-decoration: underline;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.experience-company:hover {
+  color: #ccc;
+}
+
+.experience-achievements {
+  list-style: none;
+  padding: 0;
+}
+
+.experience-achievements li {
+  color: #aaa;
+  line-height: 1.6;
+  margin-bottom: 0.8rem;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.experience-achievements li::before {
+  content: "•";
+  color: #666;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+@media (max-width: 768px) {
+  .experience {
+    padding: 2rem 0 4rem;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+  }
+
+  .timeline-item {
+    margin-bottom: 2.5rem;
+  }
+
+  .timeline-marker {
+    margin-right: 1.5rem;
+  }
+
+  .experience-title {
+    font-size: 1.2rem;
+  }
+
+  .timeline-line {
+    min-height: 80px;
+  }
+}

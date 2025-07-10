@@ -1,0 +1,19 @@
+.portfolio {
+  background: #0a0a0a;
+  min-height: 100vh;
+}
+
+.portfolio-content {
+  background: #0a0a0a;
+  border-left: 1px solid #333;
+  border-right: 1px solid #333;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .portfolio-content {
+    border-left: none;
+    border-right: none;
+  }
+}

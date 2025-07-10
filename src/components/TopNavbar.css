@@ -1,0 +1,123 @@
+.top-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem 0;
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+}
+
+.brand-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: 0.1em;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.link-text {
+  color: #fff;
+}
+
+.link-icon {
+  transition: transform 0.3s ease;
+  width: 18px;
+  height: 18px;
+}
+
+.nav-link:hover .link-icon {
+  transform: scale(1.1);
+}
+
+.resume-btn {
+  color: #fff;
+}
+
+.resume-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.linkedin-btn {
+  color: #fff;
+}
+
+.linkedin-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.github-btn {
+  color: #fff;
+}
+
+.github-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .nav-container {
+    padding: 0 1rem;
+  }
+  
+  .nav-links {
+    gap: 1rem;
+  }
+  
+  .nav-link {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+  
+  .link-text {
+    display: none;
+  }
+  
+  .resume-btn .link-icon {
+    width: 18px;
+    height: 18px;
+  }
+} 
