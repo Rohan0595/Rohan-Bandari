@@ -5,6 +5,38 @@
   min-height: 80vh;
 }
 
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.section-title {
+  font-family: "Montserrat", sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-subtitle {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.1rem;
+  color: #888;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -13,17 +45,35 @@
 }
 
 .project-card {
-  background: #1a1a1a;
+  background: linear-gradient(145deg, #1a1a1a 0%, #0f0f0f 100%);
   border: 1px solid #333;
-  border-radius: 12px;
+  border-radius: 16px;
   padding: 2rem;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
 }
 
 .project-card:hover {
-  transform: translateY(-5px);
-  border-color: #444;
-  background: #1f1f1f;
+  transform: translateY(-8px);
+  border-color: #667eea;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.project-card:hover::before {
+  transform: scaleX(1);
 }
 
 .project-header {
@@ -40,50 +90,62 @@
 }
 
 .project-category {
-  color: #888;
+  color: #667eea;
   font-size: 0.9rem;
-  font-weight: 500;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .project-year {
   color: #666;
   font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.2rem 0.6rem;
+  border-radius: 8px;
 }
 
 .project-status {
-  padding: 0.3rem 0.8rem;
-  border-radius: 12px;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
   font-size: 0.8rem;
-  font-weight: 500;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .project-status.live {
   background: rgba(34, 197, 94, 0.2);
   color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.3);
 }
 
 .project-status.in-development {
   background: rgba(251, 191, 36, 0.2);
   color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.3);
 }
 
 .project-status.completed {
   background: rgba(59, 130, 246, 0.2);
   color: #3b82f6;
+  border: 1px solid rgba(59, 130, 246, 0.3);
 }
 
 .project-title {
   font-family: "Montserrat", sans-serif;
-  font-size: 1.3rem;
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 700;
   margin-bottom: 1rem;
   color: white;
+  line-height: 1.3;
 }
 
 .project-description {
   color: #aaa;
-  line-height: 1.6;
+  line-height: 1.7;
   margin-bottom: 1.5rem;
+  font-size: 0.95rem;
 }
 
 .project-technologies {
@@ -94,12 +156,19 @@
 }
 
 .tech-tag {
-  background: rgba(255, 255, 255, 0.1);
-  color: #ccc;
-  padding: 0.3rem 0.8rem;
+  background: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+  padding: 0.4rem 0.8rem;
   border-radius: 12px;
   font-size: 0.8rem;
   font-weight: 500;
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  transition: all 0.3s ease;
+}
+
+.tech-tag:hover {
+  background: rgba(102, 126, 234, 0.2);
+  transform: translateY(-1px);
 }
 
 .project-actions {
@@ -109,41 +178,93 @@
 
 .project-btn {
   padding: 0.8rem 1.5rem;
-  border-radius: 6px;
+  border-radius: 8px;
   font-family: "Poppins", sans-serif;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s ease;
   border: none;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
 }
 
 .project-btn.primary {
-  background: white;
-  color: #000;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
 .project-btn.primary:hover {
-  background: #f0f0f0;
   transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
 }
 
 .project-btn.secondary {
   background: transparent;
   color: #888;
-  border: 1px solid #333;
+  border: 2px solid #333;
 }
 
 .project-btn.secondary:hover {
   color: white;
-  border-color: #555;
+  border-color: #667eea;
+  background: rgba(102, 126, 234, 0.1);
 }
 
 @media (max-width: 768px) {
+  .section-title {
+    font-size: 2.5rem;
+  }
+  
+  .section-subtitle {
+    font-size: 1rem;
+  }
+  
   .projects-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
-
+  
+  .project-card {
+    padding: 1.5rem;
+  }
+  
   .project-actions {
     flex-direction: column;
+  }
+  
+  .project-btn {
+    width: 100%;
+  }
+  
+  .container {
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .project-title {
+    font-size: 1.3rem;
+  }
+  
+  .project-card {
+    padding: 1rem;
+  }
+  
+  .project-technologies {
+    gap: 0.3rem;
+  }
+  
+  .tech-tag {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.6rem;
   }
 }

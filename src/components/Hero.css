@@ -253,6 +253,7 @@
   font-family: 'Montserrat', 'Poppins', Arial, sans-serif;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  animation: breathing 7s ease-in-out infinite;
 }
 
 @keyframes fadeIn {
@@ -304,11 +305,17 @@
   font-family: 'Montserrat', 'Poppins', Arial, sans-serif;
 }
 .hero-role-static {
-  font-weight: 700;
-  color: #fff;
-  opacity: 0.85;
-  font-size: 2.1rem;
-  letter-spacing: 0.02em;
+  font-weight: 200;
+  font-size: 1.8rem;
+  background: linear-gradient(90deg, #87CEEB, #B0E0E6, #ADD8E6, #E0F6FF, #87CEEB);
+  background-size: 200% 200%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: gradientMove 3s linear infinite;
+  letter-spacing: 0.03em;
+  border-radius: 8px;
 }
 .hero-role-dynamic {
   display: inline-block;

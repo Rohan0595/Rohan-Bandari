@@ -1,5 +1,6 @@
 import Hero from "./components/Hero"
 import Portfolio from "./components/Portfolio"
+import Chatbot from "./components/Chatbot"
 import "./App.css"
 
 function App() {
@@ -7,6 +8,7 @@ function App() {
     <div className="App">
       <Hero />
       <Portfolio />
+      <Chatbot />
     </div>
   )
 }

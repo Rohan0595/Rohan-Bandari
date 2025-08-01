@@ -1,35 +1,10 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
+import React from "react"
 import TopNavbar from "./TopNavbar"
 import "./Hero.css"
 
-const roles = [
-  "Frontend Developer",
-  "Backend Developer",
-  "Full Stack Developer",
-  "Designer"
-];
-
 const Hero: React.FC = () => {
-  const [roleIndex, setRoleIndex] = useState(0);
-  const [fade, setFade] = useState(true);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => setFade(false), 1400);
-    const interval = setInterval(() => {
-      setFade(false);
-      setTimeout(() => {
-        setRoleIndex((prev) => (prev + 1) % roles.length);
-        setFade(true);
-      }, 400);
-    }, 2000);
-    return () => {
-      clearInterval(interval);
-      clearTimeout(timeout);
-    };
-  }, []);
-
   return (
     <section className="hero">
       <TopNavbar />
@@ -53,8 +28,8 @@ const Hero: React.FC = () => {
         <div className="hero-text">
           <h1 className="hero-name slide-in">Rohan Bandari</h1>
           <div className="hero-roles">
-            <span className={`hero-role-dynamic${fade ? " fade-in-role" : " fade-out-role"}`}>{roles[roleIndex]}</span>
-        </div>
+            <span className="hero-role-static">FULL STACK DEVELOPER</span>
+          </div>
         </div>
       </div>
     </section>
