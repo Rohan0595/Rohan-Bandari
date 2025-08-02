@@ -357,22 +357,28 @@
 }
 
 @media (max-width: 768px) {
+  .hero {
+    height: 100vh;
+    min-height: 600px;
+  }
+  
   .hero-greeting,
   .hero-name {
-    font-size: 3rem;
+    font-size: 2.8rem;
   }
 
   .landing-page-label {
     font-size: 0.9rem;
+    top: 1rem;
+    left: 1rem;
   }
 
   .hero-content {
     padding: 1rem;
   }
 
-  .landing-page-label {
-    top: 1rem;
-    left: 1rem;
+  .hero-text {
+    margin-top: 8rem;
   }
 
   .scroll-indicator {
@@ -380,39 +386,113 @@
   }
 
   .professional-photo-placeholder {
-    width: 300px;
-    height: 400px;
+    width: 280px;
+    height: 380px;
   }
 
   .professional-photo-placeholder::before {
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
   }
 
   .professional-photo-placeholder::after {
-    width: 70px;
-    height: 90px;
+    width: 65px;
+    height: 85px;
+  }
+  
+  .hero-roles {
+    margin-top: 2rem;
+    margin-left: 0;
+    font-size: 1.8rem;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  
+  .hero-role-static {
+    font-size: 1.4rem;
+  }
+  
+  .hero-role-dynamic {
+    font-size: 1.8rem;
+    min-width: 200px;
+  }
+  
+  .hero-watermark-bg {
+    font-size: 20vw;
   }
 }
 
 @media (max-width: 480px) {
+  .hero {
+    height: 100vh;
+    min-height: 500px;
+  }
+  
   .hero-greeting,
   .hero-name {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
+  }
+
+  .hero-text {
+    margin-top: 6rem;
   }
 
   .professional-photo-placeholder {
-    width: 250px;
-    height: 350px;
+    width: 220px;
+    height: 300px;
   }
 
   .professional-photo-placeholder::before {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
   }
 
   .professional-photo-placeholder::after {
-    width: 60px;
-    height: 80px;
+    width: 50px;
+    height: 70px;
+  }
+  
+  .hero-roles {
+    margin-top: 1.5rem;
+    font-size: 1.4rem;
+  }
+  
+  .hero-role-static {
+    font-size: 1.1rem;
+  }
+  
+  .hero-role-dynamic {
+    font-size: 1.4rem;
+    min-width: 160px;
+  }
+  
+  .hero-watermark-bg {
+    font-size: 25vw;
+  }
+  
+  .landing-page-label {
+    font-size: 0.8rem;
+    top: 0.5rem;
+    left: 0.5rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .hero-greeting,
+  .hero-name {
+    font-size: 1.8rem;
+  }
+  
+  .hero-roles {
+    font-size: 1.2rem;
+  }
+  
+  .hero-role-static {
+    font-size: 1rem;
+  }
+  
+  .hero-role-dynamic {
+    font-size: 1.2rem;
+    min-width: 140px;
   }
 }

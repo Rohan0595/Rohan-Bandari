@@ -81,6 +81,17 @@ const Projects: React.FC = () => {
       liveUrl: "#",
       githubUrl: "https://github.com/username/faculty-publication-system",
       image: "/placeholder.jpg"
+    },
+    {
+      id: 8,
+      title: "Club OS",
+      description: "A modern club management web application featuring task management, member tracking, event coordination, and messaging systems. Built with Next.js, React, and Tailwind CSS with real-time notifications.",
+      category: "Full Stack",
+      status: "in-development",
+      technologies: ["Next.js", "React", "Tailwind CSS", "shadcn/ui", "TypeScript", "PostgreSQL", "Supabase", "Authentication", "Real-time Notifications"],
+      liveUrl: "#",
+      githubUrl: "https://github.com/username/club-os",
+      image: "/placeholder.jpg"
     }
   ]
 
