@@ -27,13 +27,13 @@
 }
 
 .chatbot-toggle.open {
-  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
-  box-shadow: 0 8px 32px rgba(255, 107, 107, 0.4);
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  box-shadow: 0 8px 32px rgba(249, 115, 22, 0.4);
   transform: scale(1.1);
 }
 
 .chatbot-toggle.open:hover {
-  box-shadow: 0 15px 50px rgba(255, 107, 107, 0.6);
+  box-shadow: 0 15px 50px rgba(249, 115, 22, 0.6);
   transform: scale(1.15) rotate(-5deg);
 }
 
@@ -66,17 +66,20 @@
 
 .notification-badge {
   position: absolute;
-  top: -5px;
-  right: -5px;
-  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  top: -8px;
+  right: -8px;
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
   color: white;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: bold;
-  padding: 0.2rem 0.4rem;
-  border-radius: 10px;
+  padding: 0.3rem 0.6rem;
+  border-radius: 12px;
   border: 2px solid white;
   animation: bounce 2s infinite;
   z-index: 1001;
+  white-space: nowrap;
+  min-width: 80px;
+  text-align: center;
 }
 
 @keyframes bounce {

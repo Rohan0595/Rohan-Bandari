@@ -107,6 +107,54 @@
   top: 0;
 }
 
+/* Resume Download Section */
+.resume-section {
+  margin-top: 4rem;
+  padding: 3rem;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+  border-radius: 15px;
+  border: 1px solid #333;
+  text-align: center;
+}
+
+.resume-content h3 {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.resume-content p {
+  color: #aaa;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.resume-download-btn {
+  display: inline-block;
+  padding: 12px 30px;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.resume-download-btn:hover {
+  background: linear-gradient(135deg, #0056b3, #004085);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3);
+}
+
 @media (max-width: 768px) {
   .experience {
     padding: 2rem 0 4rem;
@@ -131,5 +179,18 @@
 
   .timeline-line {
     min-height: 80px;
+  }
+
+  .resume-section {
+    margin-top: 3rem;
+    padding: 2rem 1.5rem;
+  }
+
+  .resume-content h3 {
+    font-size: 1.5rem;
+  }
+
+  .resume-content p {
+    font-size: 1rem;
   }
 }

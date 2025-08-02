@@ -1,26 +1,26 @@
 .connect-tab {
   background: #0a0a0a;
   color: white;
-  padding: 3rem 0 6rem;
-  min-height: 80vh;
+  padding: 2rem 0 4rem;
+  min-height: auto;
 }
 
 .connect-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  gap: 2rem;
   align-items: start;
 }
 
 .connect-description {
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #aaa;
-  line-height: 1.7;
-  margin-bottom: 3rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
 }
 
 .contact-methods {
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 .contact-method {
@@ -90,7 +90,7 @@
   background: #1a1a1a;
   border: 1px solid #333;
   border-radius: 12px;
-  padding: 2rem;
+  padding: 1.5rem;
 }
 
 .contact-form {
@@ -101,11 +101,11 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .form-group label {
@@ -136,6 +136,20 @@
   background: #111;
 }
 
+.form-group input.error,
+.form-group textarea.error {
+  border-color: #ff4444;
+  background: #1a0a0a;
+  box-shadow: 0 0 0 2px rgba(255, 68, 68, 0.2);
+}
+
+.form-group input.error:focus,
+.form-group textarea.error:focus {
+  border-color: #ff6666;
+  background: #1a0a0a;
+  box-shadow: 0 0 0 2px rgba(255, 68, 68, 0.3);
+}
+
 .form-group input::placeholder,
 .form-group textarea::placeholder {
   color: #666;
@@ -160,17 +174,165 @@
   transform: translateY(-2px);
 }
 
+.submit-btn:disabled {
+  background: #666;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.success-message {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(76, 175, 80, 0.1);
+  border: 1px solid #4caf50;
+  border-radius: 6px;
+  color: #4caf50;
+  text-align: center;
+  font-weight: 500;
+}
+
+.error-message {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(244, 67, 54, 0.1);
+  border: 1px solid #f44336;
+  border-radius: 6px;
+  color: #f44336;
+  text-align: center;
+  font-weight: 500;
+}
+
 @media (max-width: 768px) {
+  .connect-tab {
+    padding: 1rem 0 2rem;
+  }
+
   .connect-content {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 1.5rem;
+  }
+
+  .connect-description {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-methods {
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-method {
+    margin-bottom: 1rem;
+  }
+
+  .contact-method h4 {
+    font-size: 0.8rem;
+  }
+
+  .contact-method a,
+  .contact-method span {
+    font-size: 1rem;
   }
 
   .form-row {
     grid-template-columns: 1fr;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .form-group label {
+    font-size: 0.8rem;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .submit-btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .contact-form-section {
+    padding: 1.5rem;
   }
 
   .social-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .connect-tab {
+    padding: 1.5rem 0 3rem;
+  }
+
+  .connect-content {
+    gap: 1.5rem;
+  }
+
+  .connect-description {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .contact-method h4 {
+    font-size: 0.75rem;
+  }
+
+  .contact-method a,
+  .contact-method span {
+    font-size: 0.9rem;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    padding: 0.7rem;
+    font-size: 0.85rem;
+  }
+
+  .submit-btn {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.85rem;
+  }
+
+  .contact-form-section {
+    padding: 1rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .connect-tab {
+    padding: 1rem 0 2rem;
+  }
+
+  .connect-content {
+    gap: 1rem;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    padding: 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .submit-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  .contact-form-section {
+    padding: 0.8rem;
   }
 }

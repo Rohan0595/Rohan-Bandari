@@ -5,19 +5,19 @@ import "./TopNavbar.css"
 
 const TopNavbar: React.FC = () => {
   const handleResumeClick = () => {
-    // Add your resume link here
-    window.open('/resume.pdf', '_blank')
-  }
+  // Add your resume link here
+  window.open('/Rohan-CV.pdf', '_blank')
+}
 
-  const handleLinkedInClick = () => {
-    // Add your LinkedIn profile link here
-    window.open('https://linkedin.com/in/your-profile', '_blank')
-  }
+const handleLinkedInClick = () => {
+  // Add your LinkedIn profile link here
+  window.open('https://www.linkedin.com/in/rohan-bandari-651787287/', '_blank')
+}
 
-  const handleGitHubClick = () => {
-    // Add your GitHub profile link here
-    window.open('https://github.com/your-username', '_blank')
-  }
+const handleGitHubClick = () => {
+  // Add your GitHub profile link here
+  window.open('https://github.com/Rohan0595', '_blank')
+}
 
   return (
     <nav className="top-navbar">

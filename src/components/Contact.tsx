@@ -19,7 +19,7 @@ const Contact: React.FC = () => {
             <div className="contact-info">
               <div className="contact-item">
                 <h4>Email</h4>
-                <a href="mailto:rohan@example.com">rohan@example.com</a>
+                <a href="mailto:rohanbandari0509@gmail.com">rohanbandari0509@gmail.com</a>
               </div>
               <div className="contact-item">
                 <h4>Phone</h4>
@@ -32,17 +32,17 @@ const Contact: React.FC = () => {
             </div>
 
             <div className="social-links">
-              <a href="#" className="social-link">
+              <a href="https://www.linkedin.com/in/rohan-bandari-651787287/" target="_blank" rel="noopener noreferrer" className="social-link">
                 LinkedIn
+              </a>
+              <a href="https://github.com/Rohan0595" target="_blank" rel="noopener noreferrer" className="social-link">
+                GitHub
               </a>
               <a href="#" className="social-link">
                 Dribbble
               </a>
               <a href="#" className="social-link">
                 Behance
-              </a>
-              <a href="#" className="social-link">
-                Twitter
               </a>
             </div>
           </div>
