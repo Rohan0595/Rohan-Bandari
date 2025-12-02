@@ -111,26 +111,6 @@ npm run build
 
 The built files will be in the `dist/` directory.
 
-## Deployment
-
-### Deploy to Netlify
-
-1. Push your code to GitHub
-2. Connect your repository to Netlify
-3. Set build command: `npm run build`
-4. Set publish directory: `dist`
-
-### Deploy to Vercel
-
-1. Push your code to GitHub
-2. Import your repository to Vercel
-3. Vercel will automatically detect Vite and deploy
-
-### Deploy to GitHub Pages
-
-1. Install gh-pages: `npm install --save-dev gh-pages`
-2. Add to package.json scripts: `"deploy": "gh-pages -d dist"`
-3. Run: `npm run build && npm run deploy`
 
 ## Performance
 
