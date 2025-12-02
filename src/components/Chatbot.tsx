@@ -3,20 +3,53 @@
 import React, { useState, useRef, useEffect } from "react"
 import "./Chatbot.css"
 
-// Extended knowledge base with training capabilities
-interface KnowledgeEntry {
-  keywords: string[]
-  response: string
-  category: string
+// TypeScript declarations for Speech Recognition API
+declare global {
+  interface Window {
+    SpeechRecognition: any
+    webkitSpeechRecognition: any
+  }
 }
 
+interface SpeechRecognition extends EventTarget {
+  continuous: boolean
+  interimResults: boolean
+  lang: string
+  start(): void
+  stop(): void
+  onresult: (event: SpeechRecognitionEvent) => void
+  onerror: (event: Event) => void
+  onend: () => void
+}
+
+interface SpeechRecognitionEvent {
+  results: SpeechRecognitionResultList
+}
+
+interface SpeechRecognitionResultList {
+  [index: number]: SpeechRecognitionResult
+  length: number
+}
+
+interface SpeechRecognitionResult {
+  [index: number]: SpeechRecognitionAlternative
+  length: number
+  isFinal: boolean
+}
+
+interface SpeechRecognitionAlternative {
+  transcript: string
+  confidence: number
+}
+
+// Extended knowledge base
 interface ExtendedKnowledgeBase {
   personal: Record<string, string>
   expertise: Record<string, string[] | Record<string, string>>
   skills: Record<string, any>
   projects: Record<string, any>
   social: Record<string, string>
-  training: KnowledgeEntry[]
+  training: any[]
 }
 
 const Chatbot: React.FC = () => {
@@ -27,15 +60,11 @@ const Chatbot: React.FC = () => {
   const [inputValue, setInputValue] = useState("")
   const [isTyping, setIsTyping] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  const [showTraining, setShowTraining] = useState(false)
-  const [trainingData, setTrainingData] = useState({
-    keywords: "",
-    response: "",
-    category: "general"
-  })
-  const [showAuth, setShowAuth] = useState(false)
-  const [password, setPassword] = useState("")
-  const [authError, setAuthError] = useState("")
+  const [isListening, setIsListening] = useState(false)
+  const [isAwake, setIsAwake] = useState(false)
+  const recognitionRef = useRef<SpeechRecognition | null>(null)
+  const synthRef = useRef<SpeechSynthesis | null>(null)
+  const wakeWordRecognitionRef = useRef<SpeechRecognition | null>(null)
 
   // Extended knowledge base with training capabilities
   const [knowledgeBase, setKnowledgeBase] = useState<ExtendedKnowledgeBase>({
@@ -111,6 +140,248 @@ const Chatbot: React.FC = () => {
     training: []
   })
 
+  // Initialize Speech Recognition and Synthesis
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+      const synth = window.speechSynthesis
+      
+      if (SpeechRecognition) {
+        // Wake word recognition (continuous listening for "RBot" or "hey RBot")
+        const wakeWordRecognition = new SpeechRecognition() as any
+        wakeWordRecognition.continuous = true
+        wakeWordRecognition.interimResults = true
+        wakeWordRecognition.lang = 'en-US'
+        
+        wakeWordRecognition.onresult = (event: any) => {
+          let transcript = ''
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            transcript += event.results[i][0].transcript.toLowerCase()
+          }
+          
+          // Check for wake words - handle various pronunciations
+          const wakeWords = [
+            'hey rbot',
+            'hey r bot',
+            'hey r-bot',
+            'hey robot',
+            'rbot',
+            'r bot',
+            'r-bot',
+            'robot',
+            'are bot',
+            'hey are bot'
+          ]
+          
+          const hasWakeWord = wakeWords.some(word => transcript.includes(word))
+          
+          if (hasWakeWord) {
+            if (!isAwake && !isListening) {
+              setIsAwake(true)
+              setIsListening(true)
+              wakeWordRecognition.stop()
+              // Start command recognition
+              if (recognitionRef.current) {
+                setTimeout(() => {
+                  recognitionRef.current?.start()
+                }, 300)
+              }
+            }
+          }
+        }
+        
+        wakeWordRecognition.onerror = (event: any) => {
+          // Restart wake word recognition if it stops
+          if (event.error !== 'no-speech' && !isAwake) {
+            setTimeout(() => {
+              if (wakeWordRecognitionRef.current && !isAwake) {
+                try {
+                  wakeWordRecognitionRef.current.start()
+                } catch (e) {
+                  // Ignore errors
+                }
+              }
+            }, 1000)
+          }
+        }
+        
+        wakeWordRecognition.onend = () => {
+          // Restart wake word recognition if not awake
+          if (!isAwake && !isListening) {
+            setTimeout(() => {
+              if (wakeWordRecognitionRef.current && !isAwake) {
+                try {
+                  wakeWordRecognitionRef.current.start()
+                } catch (e) {
+                  // Ignore errors
+                }
+              }
+            }, 500)
+          }
+        }
+        
+        wakeWordRecognitionRef.current = wakeWordRecognition
+        
+        // Command recognition (for actual commands after wake word)
+        const recognition = new SpeechRecognition() as any
+        recognition.continuous = false
+        recognition.interimResults = false
+        recognition.lang = 'en-US'
+        
+        recognition.onresult = (event: any) => {
+          const transcript = event.results[0][0].transcript
+          setInputValue(transcript)
+          setIsListening(false)
+          setIsAwake(false)
+          
+          setTimeout(() => {
+            const userMessage = transcript.trim()
+            setMessages((prev: any) => [...prev, { text: userMessage, isUser: true, timestamp: new Date() }])
+            setInputValue("")
+            setIsTyping(true)
+            
+            setTimeout(() => {
+              const botResponse = getChatbotResponse(userMessage)
+              setMessages((prev: any) => [...prev, { text: botResponse, isUser: false, timestamp: new Date() }])
+              setIsTyping(false)
+              speakText(botResponse)
+              
+              // Restart wake word recognition after response
+              setTimeout(() => {
+                if (wakeWordRecognitionRef.current && !isAwake) {
+                  try {
+                    wakeWordRecognitionRef.current.start()
+                  } catch (e) {
+                    // Ignore errors
+                  }
+                }
+              }, 1000)
+            }, 1000)
+          }, 100)
+        }
+        
+        recognition.onerror = () => {
+          setIsListening(false)
+          setIsAwake(false)
+          // Restart wake word recognition
+          setTimeout(() => {
+            if (wakeWordRecognitionRef.current && !isAwake) {
+              try {
+                wakeWordRecognitionRef.current.start()
+              } catch (e) {
+                // Ignore errors
+              }
+            }
+          }, 1000)
+        }
+        
+        recognition.onend = () => {
+          setIsListening(false)
+          setIsAwake(false)
+          // Restart wake word recognition
+          setTimeout(() => {
+            if (wakeWordRecognitionRef.current && !isAwake) {
+              try {
+                wakeWordRecognitionRef.current.start()
+              } catch (e) {
+                // Ignore errors
+              }
+            }
+          }, 500)
+        }
+        
+        recognitionRef.current = recognition
+        
+        // Start wake word recognition
+        setTimeout(() => {
+          try {
+            wakeWordRecognition.start()
+          } catch (e) {
+            // Ignore errors
+          }
+        }, 1000)
+      }
+      
+      synthRef.current = synth
+    }
+    
+    // Cleanup on unmount
+    return () => {
+      if (wakeWordRecognitionRef.current) {
+        try {
+          wakeWordRecognitionRef.current.stop()
+        } catch (e) {
+          // Ignore errors
+        }
+      }
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.stop()
+        } catch (e) {
+          // Ignore errors
+        }
+      }
+    }
+  }, [isAwake, isListening])
+
+  // Start wake word recognition when chatbot opens
+  useEffect(() => {
+    if (isOpen && wakeWordRecognitionRef.current && !isAwake && !isListening) {
+      setTimeout(() => {
+        try {
+          wakeWordRecognitionRef.current?.start()
+        } catch (e) {
+          // Ignore errors - might already be running
+        }
+      }, 500)
+    }
+  }, [isOpen, isAwake, isListening])
+
+  // Speak bot responses
+  const speakText = (text: string) => {
+    if (synthRef.current) {
+      const utterance = new SpeechSynthesisUtterance(text)
+      utterance.rate = 0.9
+      utterance.pitch = 1
+      utterance.volume = 0.8
+      synthRef.current.speak(utterance)
+    }
+  }
+
+  const startListening = () => {
+    if (recognitionRef.current && !isListening && !isAwake) {
+      setIsListening(true)
+      setIsAwake(true)
+      // Stop wake word recognition
+      if (wakeWordRecognitionRef.current) {
+        try {
+          wakeWordRecognitionRef.current.stop()
+        } catch (e) {
+          // Ignore errors
+        }
+      }
+      recognitionRef.current.start()
+    }
+  }
+
+  const stopListening = () => {
+    if (recognitionRef.current && isListening) {
+      recognitionRef.current.stop()
+      setIsListening(false)
+      setIsAwake(false)
+      // Restart wake word recognition
+      setTimeout(() => {
+        if (wakeWordRecognitionRef.current && !isAwake) {
+          try {
+            wakeWordRecognitionRef.current.start()
+          } catch (e) {
+            // Ignore errors
+          }
+        }
+      }, 500)
+    }
+  }
+
   const SPELLING_VARIATIONS: Record<string, string[]> = {
     'pursuing': ['persuing', 'pursing', 'pursueing', 'pursue'],
     'studying': ['studing', 'study', 'studies'],
@@ -145,35 +416,34 @@ const Chatbot: React.FC = () => {
   const getChatbotResponse = (message: string): string => {
     const lowerMessage = message.toLowerCase()
     
-    // Check training data first
-    for (const entry of knowledgeBase.training) {
-      if (entry.keywords.some(keyword => lowerMessage.includes(keyword.toLowerCase()))) {
-        return entry.response
-      }
-    }
     
     // Greetings
     if (fuzzyMatch(lowerMessage, "hello") || fuzzyMatch(lowerMessage, "hi") || fuzzyMatch(lowerMessage, "hey") || fuzzyMatch(lowerMessage, "good morning") || fuzzyMatch(lowerMessage, "good afternoon") || fuzzyMatch(lowerMessage, "good evening") || fuzzyMatch(lowerMessage, "gm") || fuzzyMatch(lowerMessage, "ga") || fuzzyMatch(lowerMessage, "ge")) {
       return `Hey there! I'm RBot, Rohan's AI assistant! Nice to meet you!\n\nI know everything about Rohan - his skills, projects, college life, and more!\n\nWhat would you like to know about him?`
     }
     
-    // Name
-    if (lowerMessage.includes("name") || lowerMessage.includes("who") || lowerMessage.includes("full name")) {
-      return `Rohan's full name is ${knowledgeBase.personal.fullName}! He's a passionate Full Stack Developer who loves creating amazing digital experiences.`
+    // Name / Introduction
+    if (lowerMessage.includes("name") || lowerMessage.includes("who") || lowerMessage.includes("full name") || 
+        lowerMessage.includes("introduce") || lowerMessage.includes("about rohan") || lowerMessage.includes("tell me about")) {
+      return `Rohan's full name is ${knowledgeBase.personal.fullName}! He's a passionate Full Stack Developer who loves creating amazing digital experiences. He's currently in his ${knowledgeBase.personal.year} of ${knowledgeBase.personal.course} with specialization in ${knowledgeBase.personal.specialization} at ${knowledgeBase.personal.college}. Originally from ${knowledgeBase.personal.hometown}, he now lives in ${knowledgeBase.personal.location}. He's skilled in various technologies and always eager to learn new things!`
     }
     
     // Location
-    if (lowerMessage.includes("where") || lowerMessage.includes("location") || lowerMessage.includes("stay") || lowerMessage.includes("live")) {
+    if (lowerMessage.includes("where") || lowerMessage.includes("location") || lowerMessage.includes("stay") || 
+        lowerMessage.includes("live") || lowerMessage.includes("currently") || lowerMessage.includes("from")) {
       return `Rohan is from ${knowledgeBase.personal.hometown} but currently lives in ${knowledgeBase.personal.location}!`
     }
     
-    // College
-    if (lowerMessage.includes("college") || lowerMessage.includes("university") || lowerMessage.includes("institute")) {
+    // College / Institute
+    if (lowerMessage.includes("college") || lowerMessage.includes("university") || lowerMessage.includes("institute") || 
+        lowerMessage.includes("studies at") || lowerMessage.includes("goes to") || lowerMessage.includes("go to")) {
       return `Rohan studies at ${knowledgeBase.personal.college}. He's currently in his ${knowledgeBase.personal.year} of ${knowledgeBase.personal.course} with specialization in ${knowledgeBase.personal.specialization}.`
     }
     
     // Course/Pursuing
-    if (lowerMessage.includes("pursuing") || lowerMessage.includes("studying") || lowerMessage.includes("course") || lowerMessage.includes("degree")) {
+    if (lowerMessage.includes("pursuing") || lowerMessage.includes("pursue") || lowerMessage.includes("studying") || 
+        lowerMessage.includes("course") || lowerMessage.includes("degree") || lowerMessage.includes("what is rohan") ||
+        lowerMessage.includes("what does rohan")) {
       return `Rohan is pursuing ${knowledgeBase.personal.course} with specialization in ${knowledgeBase.personal.specialization}! Between coding, and trying to figure out why his luck is the worst, he's got his hands full!`
     }
     
@@ -216,14 +486,20 @@ const Chatbot: React.FC = () => {
       return `Rohan has leadership experience in various roles including President of Founders Club and Events Lead at Dbug Labs. He enjoys leading teams and managing projects!`
     }
     
+    // Try to provide a helpful response even if not exact match
+    if (lowerMessage.includes("rohan")) {
+      return `I know a lot about Rohan! Here's a quick overview:\n\n• Name: ${knowledgeBase.personal.fullName}\n• Location: From ${knowledgeBase.personal.hometown}, currently in ${knowledgeBase.personal.location}\n• Education: ${knowledgeBase.personal.year} of ${knowledgeBase.personal.course} at ${knowledgeBase.personal.college}\n• Specialization: ${knowledgeBase.personal.specialization}\n• Skills: Full Stack Development, React, Node.js, and more!\n\nYou can ask me about his skills, projects, contact info, or anything else about him!`
+    }
+    
     // Default response
-    return `Hey, I don't really understand what you're asking. Kindly cross check or ask me in a way I understand. Thank you!\n\nPS: I'm not dumb, I don't know why Rohan calls me that!`
+    return `Hey, I don't really understand what you're asking. Kindly cross check or ask me in a way I understand. Thank you!\n\nPS: I'm not dumb, I don't know why Rohan calls me that!\n\nTry asking about:\n• Rohan's name or introduction\n• Where he studies or what he's pursuing\n• His skills or projects\n• How to contact him`
   }
 
-  const handleSendMessage = () => {
-    if (!inputValue.trim()) return
+  const handleSendMessage = (messageText?: string) => {
+    const textToSend = messageText || inputValue.trim()
+    if (!textToSend) return
     
-    const userMessage = inputValue.trim()
+    const userMessage = textToSend.trim()
     setMessages(prev => [...prev, { text: userMessage, isUser: true, timestamp: new Date() }])
     setInputValue("")
     setIsTyping(true)
@@ -232,6 +508,8 @@ const Chatbot: React.FC = () => {
       const botResponse = getChatbotResponse(userMessage)
       setMessages(prev => [...prev, { text: botResponse, isUser: false, timestamp: new Date() }])
       setIsTyping(false)
+      // Speak the bot response
+      speakText(botResponse)
     }, 1000)
   }
 
@@ -250,48 +528,6 @@ const Chatbot: React.FC = () => {
     scrollToBottom()
   }, [messages])
 
-  const handleTrainingSubmit = () => {
-    if (!trainingData.keywords.trim() || !trainingData.response.trim()) return
-    
-    const newTrainingEntry: KnowledgeEntry = {
-      keywords: trainingData.keywords.split(',').map(k => k.trim()),
-      response: trainingData.response,
-      category: trainingData.category
-    }
-    
-    setKnowledgeBase(prev => ({
-      ...prev,
-      training: [...prev.training, newTrainingEntry]
-    }))
-    
-    setTrainingData({ keywords: "", response: "", category: "general" })
-    setShowTraining(false)
-    
-    // Add confirmation message
-    setMessages(prev => [...prev, { 
-      text: "Great! I've learned something new! You can now ask me about this topic.", 
-      isUser: false, 
-      timestamp: new Date() 
-    }])
-  }
-
-  const handleAuthSubmit = () => {
-    // Simple password check - you can change this to any password you want
-    if (password === "rohan123") {
-      setShowAuth(false)
-      setShowTraining(true)
-      setPassword("")
-      setAuthError("")
-    } else {
-      setAuthError("Incorrect password. Only Rohan can train me!")
-      setPassword("")
-    }
-  }
-
-  const handleTrainingClick = () => {
-    setShowAuth(true)
-    setShowTraining(false)
-  }
 
   return (
     <>
@@ -377,12 +613,25 @@ const Chatbot: React.FC = () => {
                 onKeyPress={handleKeyPress}
                 placeholder="Type your message..."
                 rows={1}
-                disabled={isTyping}
+                disabled={isTyping || isListening}
               />
               <button 
+                className={`voice-btn ${isListening || isAwake ? 'listening' : ''}`}
+                onClick={isListening ? stopListening : startListening}
+                disabled={isTyping}
+                title={isListening ? "Stop listening" : isAwake ? "Waiting for command..." : "Start voice input or say 'RBot'"}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                  <line x1="12" y1="19" x2="12" y2="23"></line>
+                  <line x1="8" y1="23" x2="16" y2="23"></line>
+                </svg>
+              </button>
+              <button 
                 className="send-btn" 
-                onClick={handleSendMessage}
-                disabled={!inputValue.trim() || isTyping}
+                onClick={() => handleSendMessage()}
+                disabled={!inputValue.trim() || isTyping || isListening}
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <line x1="22" y1="2" x2="11" y2="13"></line>
@@ -390,85 +639,9 @@ const Chatbot: React.FC = () => {
                 </svg>
               </button>
             </div>
-            
-            {/* Training Button */}
-            <button 
-              className="training-btn"
-              onClick={handleTrainingClick}
-            >
-              Train RBot
-            </button>
-            
-            {/* Authentication Interface */}
-            {showAuth && (
-              <div className="training-interface">
-                <h4>Authentication Required</h4>
-                <p className="auth-message">Only Rohan can train RBot. Please enter the password.</p>
-                <div className="training-form">
-                  <input
-                    type="password"
-                    placeholder="Enter password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && handleAuthSubmit()}
-                  />
-                  {authError && <p className="auth-error">{authError}</p>}
-                  <div className="auth-buttons">
-                    <button onClick={handleAuthSubmit}>Authenticate</button>
-                    <button 
-                      className="cancel-btn"
-                      onClick={() => {
-                        setShowAuth(false)
-                        setPassword("")
-                        setAuthError("")
-                      }}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-            
-            {/* Training Interface */}
-            {showTraining && (
-              <div className="training-interface">
-                <h4>Train RBot</h4>
-                <div className="training-form">
-                  <input
-                    type="text"
-                    placeholder="Keywords (comma-separated)"
-                    value={trainingData.keywords}
-                    onChange={(e) => setTrainingData(prev => ({ ...prev, keywords: e.target.value }))}
-                  />
-                  <textarea
-                    placeholder="Response"
-                    value={trainingData.response}
-                    onChange={(e) => setTrainingData(prev => ({ ...prev, response: e.target.value }))}
-                    rows={3}
-                  />
-                  <select
-                    value={trainingData.category}
-                    onChange={(e) => setTrainingData(prev => ({ ...prev, category: e.target.value }))}
-                  >
-                    <option value="general">General</option>
-                    <option value="personal">Personal</option>
-                    <option value="technical">Technical</option>
-                    <option value="fun">Fun</option>
-                  </select>
-                  <div className="auth-buttons">
-                    <button onClick={handleTrainingSubmit}>Train RBot</button>
-                    <button 
-                      className="cancel-btn"
-                      onClick={() => {
-                        setShowTraining(false)
-                        setTrainingData({ keywords: "", response: "", category: "general" })
-                      }}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
+            {(isListening || isAwake) && (
+              <div className="listening-indicator">
+                <span>{isAwake && !isListening ? "👂 Say 'RBot' or 'Hey RBot' to activate..." : "🎤 Listening..."}</span>
               </div>
             )}
           </div>

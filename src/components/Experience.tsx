@@ -35,7 +35,7 @@ const Experience: React.FC = () => {
               </div>
               <div className="timeline-content">
                 <div className="experience-header">
-                  <span className="experience-period">Oct 2024 – Present</span>
+                  <span className="experience-period">Oct 2024 – October 2025</span>
                   <h3 className="experience-title">Events Lead, Dbug Labs</h3>
                 </div>
                 <ul className="experience-achievements">

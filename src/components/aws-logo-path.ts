@@ -1,0 +1,1 @@
+export const AWS_LOGO_PATH = "M140.1 0c-7.2 0-13.1 5.9-13.1 13.1v113.8c0 7.2 5.9 13.1 13.1 13.1h129.8c7.2 0 13.1-5.9 13.1-13.1V13.1c0-7.2-5.9-13.1-13.1-13.1H140.1z"; // Example path, replace with your actual AWS logo path

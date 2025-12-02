@@ -9,11 +9,11 @@ const Hero: React.FC = () => {
     <section className="hero">
       <TopNavbar />
       <div className="hero-background">
-        <div className="hero-watermark-bg">ROHAN</div>
+        <div className="hero-watermark-bg"></div>
         <div className="hero-watermark">ROHAN BANDARI</div>
         <div className="hero-image">
           <img
-            src="/Rohan.png"
+            src="/rohan-new.jpg"
             alt="Rohan"
             className="profile-photo"
             width={900}
@@ -28,7 +28,7 @@ const Hero: React.FC = () => {
         <div className="hero-text">
           <h1 className="hero-name slide-in">Rohan Bandari</h1>
           <div className="hero-roles">
-            <span className="hero-role-static">FULL STACK DEVELOPER</span>
+            <span className="hero-role-static"></span>
           </div>
         </div>
       </div>
