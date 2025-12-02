@@ -4,13 +4,13 @@ A modern, responsive portfolio website built with Vite, React, and TypeScript, f
 
 ## Features
 
-- ⚡ Built with Vite for lightning-fast development
-- ⚛️ React 18 with TypeScript for type safety
-- 📱 Fully responsive design
-- 🎨 Modern UI with custom styling and glassmorphism effects
-- 🚀 Fast loading times and optimized performance
-- 🎯 SEO optimized
-- 🔧 ESLint configured for code quality
+-  Built with Vite for lightning-fast development
+-  React 18 with TypeScript for type safety
+- Fully responsive design
+- Modern UI with custom styling and glassmorphism effects
+- Fast loading times and optimized performance
+- SEO optimized
+- ESLint configured for code quality
 
 ## Tech Stack
 
